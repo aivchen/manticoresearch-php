@@ -38,8 +38,8 @@ class DeleteTest extends \PHPUnit\Framework\TestCase
         $doc = [
             'body' => [
                 'index' => 'products',
-                'id' => 100
-            ]
+                'id' => 100,
+            ],
         ];
 
         $response = self::$client->delete($doc);

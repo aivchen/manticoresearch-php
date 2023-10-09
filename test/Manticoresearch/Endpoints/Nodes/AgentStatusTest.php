@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Endpoints\Nodes\AgentStatus;
@@ -6,7 +7,6 @@ use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class AgentStatusTest extends \PHPUnit\Framework\TestCase
 {
-
     public function testGetPath()
     {
         $agentStatus = new AgentStatus();
@@ -31,7 +31,7 @@ class AgentStatusTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals([
             'status_period_seconds',
-            'status_stored_periods'
+            'status_stored_periods',
         ], $keys);
     }
 }

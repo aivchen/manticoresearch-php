@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints;
 
 use Manticoresearch\Request;
 
 /**
- * Class Replace
- * @package Manticoresearch\Endpoints
+ * Class Replace.
  */
 class Replace extends Request
 {

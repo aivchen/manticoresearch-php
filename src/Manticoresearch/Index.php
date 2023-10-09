@@ -1,18 +1,18 @@
 <?php
 
-
 namespace Manticoresearch;
 
 use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Query\Percolate;
-use Manticoresearch\Results;
 
 /**
- * Manticore index object
+ * Manticore index object.
+ *
  * @category ManticoreSearch
- * @package ManticoreSearch
+ *
  * @author Adrian Nuta <adrian.nuta@manticoresearch.com>
- * @link https://manticoresearch.com
+ *
+ * @see https://manticoresearch.com
  */
 class Index
 {
@@ -33,6 +33,7 @@ class Index
     {
         $search = new Search($this->client);
         $search->setIndex($this->index);
+
         return $search->search($input);
     }
 
@@ -43,11 +44,12 @@ class Index
             'body' => [
                 'index' => $this->index,
                 'query' => [
-                    'equals' => ['id' => $id]
-                ]
-            ]
+                    'equals' => ['id' => $id],
+                ],
+            ],
         ];
         $result = new ResultSet($this->client->search($params, true));
+
         return $result->valid() ? $result->current() : null;
     }
 
@@ -61,10 +63,11 @@ class Index
             'body' => [
                 'index' => $this->index,
                 'query' => [
-                    'in' => ['id' => $ids]
-                ]
-            ]
+                    'in' => ['id' => $ids],
+                ],
+            ],
         ];
+
         return new ResultSet($this->client->search($params, true));
     }
 
@@ -80,13 +83,14 @@ class Index
             'body' => [
                 'index' => $this->index,
                 'id' => $id,
-                'doc' => $data
-            ]
+                'doc' => $data,
+            ],
         ];
 
         if ($this->cluster !== null) {
             $params['body']['cluster'] = $this->cluster;
         }
+
         return $this->client->insert($params);
     }
 
@@ -109,13 +113,14 @@ class Index
             $insert = [
                 'index' => $this->index,
                 'id' => $id,
-                'doc' => $document
+                'doc' => $document,
             ];
             if ($this->cluster !== null) {
                 $insert['cluster'] = $this->cluster;
             }
             $toinsert[] = ['insert' => $insert];
         }
+
         return $this->client->bulk(['body' => $toinsert]);
     }
 
@@ -125,12 +130,13 @@ class Index
         $params = [
             'body' => [
                 'index' => $this->index,
-                'id' => $id
-            ]
+                'id' => $id,
+            ],
         ];
         if ($this->cluster !== null) {
             $params['body']['cluster'] = $this->cluster;
         }
+
         return $this->client->delete($params);
     }
 
@@ -142,12 +148,13 @@ class Index
         $params = [
             'body' => [
                 'index' => $this->index,
-                'query' => $query
-            ]
+                'query' => $query,
+            ],
         ];
         if ($this->cluster !== null) {
             $params['body']['cluster'] = $this->cluster;
         }
+
         return $this->client->delete($params);
     }
 
@@ -158,12 +165,13 @@ class Index
             'body' => [
                 'index' => $this->index,
                 'id' => $id,
-                'doc' => $data
-            ]
+                'doc' => $data,
+            ],
         ];
         if ($this->cluster !== null) {
             $params['body']['cluster'] = $this->cluster;
         }
+
         return $this->client->update($params);
     }
 
@@ -176,12 +184,13 @@ class Index
             'body' => [
                 'index' => $this->index,
                 'query' => $query,
-                'doc' => $data
-            ]
+                'doc' => $data,
+            ],
         ];
         if ($this->cluster !== null) {
             $params['body']['cluster'] = $this->cluster;
         }
+
         return $this->client->update($params);
     }
 
@@ -197,12 +206,13 @@ class Index
             'body' => [
                 'index' => $this->index,
                 'id' => $id,
-                'doc' => $data
-            ]
+                'doc' => $data,
+            ],
         ];
         if ($this->cluster !== null) {
             $params['body']['cluster'] = $this->cluster;
         }
+
         return $this->client->replace($params);
     }
 
@@ -221,13 +231,14 @@ class Index
             $replace = [
                 'index' => $this->index,
                 'id' => $id,
-                'doc' => $document
+                'doc' => $document,
             ];
             if ($this->cluster !== null) {
                 $replace['cluster'] = $this->cluster;
             }
             $toreplace[] = ['replace' => $replace];
         }
+
         return $this->client->bulk(['body' => $toreplace]);
     }
 
@@ -237,12 +248,13 @@ class Index
             'index' => $this->index,
             'body' => [
                 'columns' => $fields,
-                'settings' => $settings
-            ]
+                'settings' => $settings,
+            ],
         ];
         if ($silent === true) {
             $params['body']['silent'] = true;
         }
+
         return $this->client->indices()->create($params);
     }
 
@@ -254,6 +266,7 @@ class Index
         if ($silent === true) {
             $params['body'] = ['silent' => true];
         }
+
         return $this->client->indices()->drop($params);
     }
 
@@ -262,6 +275,7 @@ class Index
         $params = [
             'index' => $this->index,
         ];
+
         return $this->client->indices()->describe($params);
     }
 
@@ -270,6 +284,7 @@ class Index
         $params = [
             'index' => $this->index,
         ];
+
         return $this->client->indices()->status($params);
     }
 
@@ -278,6 +293,7 @@ class Index
         $params = [
             'index' => $this->index,
         ];
+
         return $this->client->indices()->truncate($params);
     }
 
@@ -289,6 +305,7 @@ class Index
         if ($sync === true) {
             $params['body'] = ['sync' => true];
         }
+
         return $this->client->indices()->optimize($params);
     }
 
@@ -315,20 +332,21 @@ class Index
                 'index' => $this->index,
                 'body' => [
                     'operation' => 'add',
-                    'column' => ['name' => $name, 'type' => $type]
-                ]
+                    'column' => ['name' => $name, 'type' => $type],
+                ],
             ];
         } elseif ($operation === 'drop') {
             $params = [
                 'index' => $this->index,
                 'body' => [
                     'operation' => 'drop',
-                    'column' => ['name' => $name]
-                ]
+                    'column' => ['name' => $name],
+                ],
             ];
         } else {
             throw new RuntimeException('Alter operation not recognized');
         }
+
         return $this->client->indices()->alter($params);
     }
 
@@ -338,9 +356,10 @@ class Index
             'index' => $this->index,
             'body' => [
                 'query' => $query,
-                'options' => $options
-            ]
+                'options' => $options,
+            ],
         ];
+
         return $this->client->keywords($params);
     }
 
@@ -350,9 +369,10 @@ class Index
             'index' => $this->index,
             'body' => [
                 'query' => $query,
-                'options' => $options
-            ]
+                'options' => $options,
+            ],
         ];
+
         return $this->client->suggest($params);
     }
 
@@ -362,11 +382,11 @@ class Index
             'index' => $this->index,
             'body' => [
                 'query' => $query,
-            ]
+            ],
         ];
+
         return $this->client->explainQuery($params);
     }
-
 
     public function percolate($docs)
     {
@@ -380,6 +400,7 @@ class Index
                 $params['body']['query'] = ['percolate' => ['document' => $docs]];
             }
         }
+
         return new Results\PercolateResultSet($this->client->pq()->search($params, true));
     }
 
@@ -395,9 +416,9 @@ class Index
                 $params['body']['query'] = ['percolate' => ['document' => $docs]];
             }
         }
+
         return new Results\PercolateDocsResultSet($this->client->pq()->search($params, true), $docs);
     }
-
 
     public function getClient(): Client
     {
@@ -412,12 +433,14 @@ class Index
     public function setName($index): self
     {
         $this->index = $index;
+
         return $this;
     }
 
     public function setCluster($cluster): self
     {
         $this->cluster = $cluster;
+
         return $this;
     }
 
@@ -426,6 +449,6 @@ class Index
         if (is_string($id) && !is_numeric($id)) {
             throw new RuntimeException('Incorrect document id passed');
         }
-        $id = (int)$id;
+        $id = (int) $id;
     }
 }

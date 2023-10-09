@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Indices;
 
 use Manticoresearch\Endpoints\EmulateBySql;
@@ -8,12 +7,12 @@ use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Utils;
 
 /**
- * Class Status
- * @package Manticoresearch\Endpoints\Indices
+ * Class Status.
  */
 class Settings extends EmulateBySql
 {
     use Utils;
+
     /**
      * @var string
      */
@@ -22,10 +21,12 @@ class Settings extends EmulateBySql
     public function setBody($params = null)
     {
         if (isset($this->index)) {
-            return parent::setBody(['query' => "SHOW INDEX ".$this->index. " SETTINGS"]);
+            return parent::setBody(['query' => 'SHOW INDEX ' . $this->index . ' SETTINGS']);
         }
+
         throw new RuntimeException('Index name is missing.');
     }
+
     /**
      * @return mixed
      */

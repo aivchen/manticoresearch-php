@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints;
 
 use Manticoresearch\Exceptions\RuntimeException;
@@ -14,18 +13,21 @@ class Keywords extends EmulateBySql
     public function setBody($params = null)
     {
         if (isset($this->index)) {
-            $binds =[];
+            $binds = [];
             $binds[] = "'" . self::escape($params['query']) . "'";
             $binds[] = "'" . $this->index . "'";
             if (count($params['options']) > 0) {
                 foreach ($params['options'] as $name => $value) {
-                    $binds[] = "$value AS $name";
+                    $binds[] = "{$value} AS {$name}";
                 }
             }
-            return parent::setBody(['query' => "CALL KEYWORDS(" . implode(",", $binds) . ")"]);
+
+            return parent::setBody(['query' => 'CALL KEYWORDS(' . implode(',', $binds) . ')']);
         }
+
         throw new RuntimeException('Index name is missing.');
     }
+
     public function getIndex()
     {
         return $this->index;

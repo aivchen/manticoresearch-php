@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Results;
 
 use Manticoresearch\Response;
 
 class PercolateDocsResultSet implements \Iterator, \Countable
 {
-
     /** @var int The position of the iterator through the result set */
     protected $position = 0;
 
@@ -28,7 +26,6 @@ class PercolateDocsResultSet implements \Iterator, \Countable
 
     public function __construct($responseObj, $docs)
     {
-
         foreach ($docs as $doc) {
             $this->array[] = ['doc' => $doc, 'queries' => []];
         }
@@ -39,8 +36,8 @@ class PercolateDocsResultSet implements \Iterator, \Countable
             foreach ($hits as $query) {
                 if (isset($query['fields'], $query['fields']['_percolator_document_slot'])) {
                     foreach ($query['fields']['_percolator_document_slot'] as $d) {
-                        if (isset($this->array[$d-1])) {
-                            $this->array[$d-1]['queries'][] =$query;
+                        if (isset($this->array[$d - 1])) {
+                            $this->array[$d - 1]['queries'][] = $query;
                         }
                     }
                 }
@@ -60,7 +57,7 @@ class PercolateDocsResultSet implements \Iterator, \Countable
 
     public function next()
     {
-        $this->position++;
+        ++$this->position;
     }
 
     public function valid()

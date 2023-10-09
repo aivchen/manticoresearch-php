@@ -1,18 +1,15 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Pq;
 
 use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Request;
 
 /**
- * Class Search
- * @package Manticoresearch\Endpoints\Pq
+ * Class Search.
  */
 class Search extends Request
 {
-
     /**
      * @var string
      */
@@ -32,8 +29,9 @@ class Search extends Request
     public function getPath()
     {
         if (isset($this->index)) {
-            return "/json/pq/" . $this->index . "/_search";
+            return '/json/pq/' . $this->index . '/_search';
         }
+
         throw new RuntimeException('Index name is missing.');
     }
 

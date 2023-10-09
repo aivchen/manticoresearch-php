@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Connection\Strategy;
 
 use Manticoresearch\Client;
@@ -9,18 +10,18 @@ class StaticRoundRobinTest extends TestCase
 {
     public function testTwoConnections()
     {
-        $client = new Client(["connectionStrategy"  =>"StaticRoundRobin"]);
+        $client = new Client(['connectionStrategy'  => 'StaticRoundRobin']);
 
         $client->setHosts([
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => $_SERVER['MS_PORT'],
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
             ],
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => $_SERVER['MS_PORT'],
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
             ],
         ]);
 
@@ -34,19 +35,17 @@ class StaticRoundRobinTest extends TestCase
 
     public function testBadFirst()
     {
-
-        $client = new Client(["connectionStrategy"  =>"StaticRoundRobin"]);
+        $client = new Client(['connectionStrategy'  => 'StaticRoundRobin']);
 
         $client->setHosts([
             [
                 'host' => $_SERVER['MS_HOST'],
-                'port' => 9309
+                'port' => 9309,
             ],
             [
                 'host' => $_SERVER['MS_HOST'],
-                'port' => $_SERVER['MS_PORT']
+                'port' => $_SERVER['MS_PORT'],
             ],
-
         ]);
 
         $params = [
@@ -55,11 +54,11 @@ class StaticRoundRobinTest extends TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
-                    ]
+                        'options' => ['indexed', 'stored'],
+                    ],
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         $response = $client->indices()->create($params);
         $params = [
@@ -68,19 +67,19 @@ class StaticRoundRobinTest extends TestCase
                 'query' => [
                     'match_phrase' => [
                         'title' => 'find me',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         $client->search($params);
         $this->assertSame($_SERVER['MS_PORT'], $client->getConnectionPool()->getConnection()->getPort());
     }
+
     public function testSequence()
     {
-
         $mConns = [];
-        for ($i=0; $i<10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $mConns[] = mock::mock(\Manticoresearch\Connection::class)
                 ->shouldReceive('isAlive')->andReturn(true)->getMock();
         }

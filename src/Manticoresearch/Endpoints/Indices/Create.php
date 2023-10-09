@@ -7,12 +7,12 @@ use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Utils;
 
 /**
- * Class Create
- * @package Manticoresearch\Endpoints\Indices
+ * Class Create.
  */
 class Create extends EmulateBySql
 {
     use Utils;
+
     /**
      * @var string
      */
@@ -31,26 +31,29 @@ class Create extends EmulateBySql
                     $columns[] = $column;
                 }
             }
-            $options = "";
+            $options = '';
             if (isset($params['settings'])) {
                 foreach ($params['settings'] as $name => $value) {
                     if (is_array($value)) {
                         foreach ($value as $v) {
-                            $options.=" ".$name." = '".$v."'";
+                            $options .= ' ' . $name . " = '" . $v . "'";
                         }
                     } else {
-                        $options.=" ".$name." = '".$value."'";
+                        $options .= ' ' . $name . " = '" . $value . "'";
                     }
                 }
             }
-            return parent::setBody(['query' => "CREATE TABLE ".
-                (isset($params['silent']) && $params['silent']===true?' IF NOT EXISTS ':'').
-                $this->index.
-                (count($columns)>0?"(".implode(",", $columns).")":" ")
-                .$options]);
+
+            return parent::setBody(['query' => 'CREATE TABLE ' .
+                (isset($params['silent']) && $params['silent'] === true ? ' IF NOT EXISTS ' : '') .
+                $this->index .
+                (count($columns) > 0 ? '(' . implode(',', $columns) . ')' : ' ')
+                . $options]);
         }
+
         throw new RuntimeException('Index name is missing.');
     }
+
     /**
      * @return mixed
      */

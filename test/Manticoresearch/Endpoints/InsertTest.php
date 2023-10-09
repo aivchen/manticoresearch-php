@@ -28,8 +28,8 @@ class InsertTest extends \PHPUnit\Framework\TestCase
             'id' => 1001,
             'doc' => [
                 'title' => 'Star Trek: Nemesis DVD',
-                'price' => 6.99
-            ]
+                'price' => 6.99,
+            ],
         ];
         $response = $client->insert(['body' => $doc]);
 

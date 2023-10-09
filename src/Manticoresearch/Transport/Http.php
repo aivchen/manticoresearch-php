@@ -8,29 +8,27 @@ use Manticoresearch\Request;
 use Manticoresearch\Response;
 
 /**
- * Class Http
- * @package Manticoresearch\Transport
+ * Class Http.
  */
 class Http extends \Manticoresearch\Transport implements TransportInterface
 {
-
     /**
      * @var string
      */
     protected $scheme = 'http';
 
-    protected static $curl = null;
+    protected static $curl;
 
     /**
-     * @param Request $request
      * @param array $params
+     *
      * @return Response
      */
     public function execute(Request $request, $params = [])
     {
         $connection = $this->getConnection();
         $conn = $this->getCurlConnection($connection->getConfig('persistent'));
-        $url = $this->scheme.'://'.$connection->getHost().':'.$connection->getPort();
+        $url = $this->scheme . '://' . $connection->getHost() . ':' . $connection->getPort();
         $endpoint = $request->getPath();
         $url .= $endpoint;
         $url = $this->setupURI($url, $request->getQuery());
@@ -56,7 +54,7 @@ class Http extends \Manticoresearch\Transport implements TransportInterface
         curl_setopt($conn, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($conn, CURLOPT_HTTPHEADER, $headers);
 
-        if ($connection->getConnectTimeout()>0) {
+        if ($connection->getConnectTimeout() > 0) {
             curl_setopt($conn, CURLOPT_CONNECTTIMEOUT, $connection->getConnectTimeout());
         }
 
@@ -65,7 +63,7 @@ class Http extends \Manticoresearch\Transport implements TransportInterface
             curl_setopt(
                 $conn,
                 CURLOPT_USERPWD,
-                $connection->getConfig('username').":".$connection->getConfig('password')
+                $connection->getConfig('username') . ':' . $connection->getConfig('password')
             );
         }
         if ($connection->getConfig('proxy') !== null) {
@@ -85,31 +83,31 @@ class Http extends \Manticoresearch\Transport implements TransportInterface
         $status = curl_getinfo($conn, CURLINFO_HTTP_CODE);
         if (isset($params['responseClass'])) {
             $responseClass = $params['responseClass'];
-            $responseClassParams = isset($params['responseClassParams'])?$params['responseClassParams']:[];
+            $responseClassParams = $params['responseClassParams'] ?? [];
             $response = new $responseClass($responseString, $status, $responseClassParams);
         } else {
             $response = new Response($responseString, $status);
         }
 
-        $time = $end-$start;
+        $time = $end - $start;
         $response->setTime($time);
         $response->setTransportInfo([
-                'url' => $url,
-                'headers' => $headers,
-                'body' => $request->getBody()
-            ]);
-        //hard error
-        if ($errorno>0) {
+            'url' => $url,
+            'headers' => $headers,
+            'body' => $request->getBody(),
+        ]);
+        // hard error
+        if ($errorno > 0) {
             $error = curl_error($conn);
 
             self::$curl = null;
+
             throw new ConnectionException($error, $request);
         }
 
-
         $this->logger->debug('Request body:', [
             'connection' => $connection->getConfig(),
-            'payload' => $request->getBody()
+            'payload' => $request->getBody(),
         ]);
         $this->logger->info('Request:', [
             'url' => $url,
@@ -117,15 +115,17 @@ class Http extends \Manticoresearch\Transport implements TransportInterface
             'time' => $time,
         ]);
         $this->logger->debug('Response body:', [json_decode($responseString, true)]);
-        //soft error
+        // soft error
         if ($response->hasError()) {
             $this->logger->error('Response:', [
                 'url' => $url,
                 'error' => $response->getError(),
                 'payload' => $request->getBody(),
             ]);
+
             throw new ResponseException($request, $response);
         }
+
         return $response;
     }
 
@@ -134,6 +134,7 @@ class Http extends \Manticoresearch\Transport implements TransportInterface
         if (!$persistent || !self::$curl) {
             self::$curl = curl_init();
         }
+
         return self::$curl;
     }
 }

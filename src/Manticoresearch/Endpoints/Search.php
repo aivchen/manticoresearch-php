@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints;
 
 use Manticoresearch\Request;
 
 /**
- * Class Search
- * @package Manticoresearch\Endpoints
+ * Class Search.
  */
 class Search extends Request
 {

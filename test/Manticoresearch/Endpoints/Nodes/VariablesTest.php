@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Test\Helper\PopulateHelperTest;
@@ -13,6 +14,7 @@ class VariablesTest extends \PHPUnit\Framework\TestCase
 
         $keys = array_keys($response);
         sort($keys);
+
         // Adding extra try-catch to provide compatibility with previous Manticore versions
         try {
             $this->assertEquals([
@@ -31,7 +33,7 @@ class VariablesTest extends \PHPUnit\Framework\TestCase
                 'secondary_indexes',
                 'session_read_only',
                 'threads_ex',
-                'threads_ex_effective'
+                'threads_ex_effective',
             ], $keys);
         } catch (\PHPUnit\Framework\ExpectationFailedException $e) {
             $this->assertEquals([
@@ -53,7 +55,7 @@ class VariablesTest extends \PHPUnit\Framework\TestCase
                 'session_read_only',
                 'thread_stack',
                 'threads_ex',
-                'threads_ex_effective'
+                'threads_ex_effective',
             ], $keys);
         }
     }

@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Connection\Strategy;
 
 use Manticoresearch\Connection;
 
 /**
- * Class RoundRobin
- * @package Manticoresearch\Connection\Strategy
+ * Class RoundRobin.
  */
 class RoundRobin implements SelectorInterface
 {
@@ -16,14 +14,11 @@ class RoundRobin implements SelectorInterface
      */
     private $current = 0;
 
-    /**
-     * @param array $connections
-     * @return Connection
-     */
-    public function getConnection(array $connections) :Connection
+    public function getConnection(array $connections): Connection
     {
         $connection = $connections[$this->current % count($connections)];
         ++$this->current;
+
         return $connection;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Client;
@@ -25,12 +26,12 @@ class KeywordsTest extends \PHPUnit\Framework\TestCase
         $params = [
             'index' => 'products',
             'body' => [
-                'query'=>'product',
+                'query' => 'product',
                 'options' => [
-                    'stats' =>1,
-                    'fold_lemmas' => 1
-                ]
-            ]
+                    'stats' => 1,
+                    'fold_lemmas' => 1,
+                ],
+            ],
         ];
         $response = static::$client->keywords($params);
         $this->assertSame('product', $response['0']['normalized']);
@@ -41,12 +42,12 @@ class KeywordsTest extends \PHPUnit\Framework\TestCase
         $params = [
             'index' => 'productsNOT',
             'body' => [
-                'query'=>'product',
+                'query' => 'product',
                 'options' => [
-                    'stats' =>1,
-                    'fold_lemmas' => 1
-                ]
-            ]
+                    'stats' => 1,
+                    'fold_lemmas' => 1,
+                ],
+            ],
         ];
 
         // Adding extra try-catch to provide compatibility with previous Manticore versions

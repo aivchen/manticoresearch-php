@@ -19,6 +19,7 @@ class Sql extends Response
             }
             unset($response[0]);
         }
+
         return $response;
     }
 }

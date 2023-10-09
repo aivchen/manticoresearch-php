@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch;
 
 use Manticoresearch\Endpoints\Indices\Alter;
@@ -14,12 +13,11 @@ use Manticoresearch\Endpoints\Indices\Optimize;
 use Manticoresearch\Endpoints\Indices\Settings;
 use Manticoresearch\Endpoints\Indices\Status;
 use Manticoresearch\Endpoints\Indices\Truncate;
-use Manticoresearch\Endpoints\Sql;
-use Manticoresearch\Exceptions\RuntimeException;
 
 class Indices
 {
     use Utils;
+
     /**
      * @var Client
      */
@@ -32,6 +30,7 @@ class Indices
 
     /**
      * Pq constructor.
+     *
      * @param Client $client
      */
     public function __construct($client)
@@ -42,6 +41,7 @@ class Indices
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function alter($params)
@@ -55,13 +55,13 @@ class Indices
             $endpoint,
             array_merge($this->params, ['responseClassParams' => ['customMapping' => true]])
         );
+
         return $response->getResponse();
     }
 
-
     /**
-     *
      * @param array $params
+     *
      * @return mixed
      */
     public function create($params)
@@ -72,11 +72,13 @@ class Indices
         $endpoint->setIndex($index);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function describe($params)
@@ -90,11 +92,13 @@ class Indices
             $endpoint,
             array_merge($this->params, ['responseClassParams' => ['customMapping' => true]])
         );
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function drop($params)
@@ -105,10 +109,13 @@ class Indices
         $endpoint->setIndex($index);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
+
         return $response->getResponse();
     }
+
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function import($params)
@@ -119,10 +126,13 @@ class Indices
         $endpoint->setIndex($index);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
+
         return $response->getResponse();
     }
+
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function flushramchunk($params)
@@ -132,11 +142,13 @@ class Indices
         $endpoint->setIndex($index);
         $endpoint->setBody();
         $response = $this->client->request($endpoint, $this->params);
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function flushrtindex($params)
@@ -146,11 +158,13 @@ class Indices
         $endpoint->setIndex($index);
         $endpoint->setBody();
         $response = $this->client->request($endpoint, $this->params);
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function optimize($params)
@@ -164,11 +178,13 @@ class Indices
             $endpoint,
             array_merge($this->params, ['responseClassParams' => ['customMapping' => true]])
         );
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function status($params)
@@ -182,11 +198,13 @@ class Indices
             $endpoint,
             array_merge($this->params, ['responseClassParams' => ['customMapping' => true]])
         );
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return array|mixed|string
      */
     public function settings($params)
@@ -200,11 +218,13 @@ class Indices
             $endpoint,
             array_merge($this->params, ['responseClassParams' => ['customMapping' => true]])
         );
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function truncate($params)
@@ -215,6 +235,7 @@ class Indices
         $endpoint->setIndex($index);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
+
         return $response->getResponse();
     }
 }

@@ -11,7 +11,7 @@ class ConnectionTest extends TestCase
     /** @var Connection */
     private $connection;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->connection = new Connection([]);
@@ -51,7 +51,7 @@ class ConnectionTest extends TestCase
     {
         $headers = [
             'a' => 1,
-            'b' => 2
+            'b' => 2,
         ];
 
         $this->connection->setheaders($headers);
@@ -62,7 +62,7 @@ class ConnectionTest extends TestCase
     {
         $config = [
             'a' => 1,
-            'b' => 2
+            'b' => 2,
         ];
 
         $this->connection->setConfig($config);
@@ -86,7 +86,6 @@ class ConnectionTest extends TestCase
             'timeout',
             'transport',
             'username',
-
         ], $keys);
     }
 
@@ -94,7 +93,7 @@ class ConnectionTest extends TestCase
     {
         $config = [
             'a' => 1,
-            'b' => 2
+            'b' => 2,
         ];
 
         $this->connection->setConfig($config);

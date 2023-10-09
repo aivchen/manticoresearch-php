@@ -5,8 +5,7 @@ namespace Manticoresearch\Endpoints;
 use Manticoresearch\Request;
 
 /**
- * Class Bulk
- * @package Manticoresearch\Endpoints
+ * Class Bulk.
  */
 class Bulk extends Request
 {

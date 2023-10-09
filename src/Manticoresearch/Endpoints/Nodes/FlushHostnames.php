@@ -8,6 +8,7 @@ use Manticoresearch\Utils;
 class FlushHostnames extends EmulateBySql
 {
     use Utils;
+
     /**
      * @var string
      */
@@ -15,6 +16,6 @@ class FlushHostnames extends EmulateBySql
 
     public function setBody($params = null)
     {
-        return parent::setBody(['query' => "FLUSH HOSTNAMES"]);
+        return parent::setBody(['query' => 'FLUSH HOSTNAMES']);
     }
 }

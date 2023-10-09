@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Client;
@@ -43,9 +44,9 @@ class UpdateTest extends \PHPUnit\Framework\TestCase
                 'doc' => [
                     // title cannot be updated as it is a text field, see
                     // https://github.com/manticoresoftware/manticoresearch-php/issues/10#issuecomment-612685916
-                    'price' => 4.99 // was 2.99
-                ]
-            ]
+                    'price' => 4.99, // was 2.99
+                ],
+            ],
         ];
         $result = self::$client->update($partial);
 
@@ -55,7 +56,7 @@ class UpdateTest extends \PHPUnit\Framework\TestCase
                 'query' => [
                     'match' => ['*' => 'broken'],
                 ],
-            ]
+            ],
         ];
         $results = self::$client->search($search);
 

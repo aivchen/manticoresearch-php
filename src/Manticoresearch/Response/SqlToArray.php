@@ -74,15 +74,17 @@ class SqlToArray extends Response
                             unset($property['Variable']);
                         }
                     } else {
-                        $id++;
+                        ++$id;
                     }
                 } else {
-                    $id++;
+                    ++$id;
                 }
-                $data[$id] = (count($property) == 1)?array_shift($property):$property;
+                $data[$id] = (count($property) == 1) ? array_shift($property) : $property;
             }
+
             return (count($data) > 0) ? $data : [];
         }
+
         return $response;
     }
 }

@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Response;
 
 use Manticoresearch\Response;
 
 class Bulk extends Response
 {
-
     /*
      * Check whenever response has error
      * @return bool
@@ -20,6 +18,7 @@ class Bulk extends Response
                 return true;
             }
         }
+
         return false;
     }
 
@@ -30,12 +29,13 @@ class Bulk extends Response
     public function getError()
     {
         $response = $this->getResponse();
-        $errors = "";
+        $errors = '';
         foreach ($response as $r) {
             if (isset($r['error']) && $r['error'] !== '') {
                 $errors .= json_encode($r['error'], true);
             }
         }
+
         return $errors;
     }
 }

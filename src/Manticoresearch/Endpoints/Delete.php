@@ -5,8 +5,7 @@ namespace Manticoresearch\Endpoints;
 use Manticoresearch\Request;
 
 /**
- * Class Delete
- * @package Manticoresearch\Endpoints
+ * Class Delete.
  */
 class Delete extends Request
 {

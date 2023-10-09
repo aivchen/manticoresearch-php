@@ -1,9 +1,8 @@
 <?php
 
-
 namespace Manticoresearch;
 
-/**
+/*
  * Manticore response object
  *  Stores result array, time and errors
  * @category ManticoreSearch
@@ -14,42 +13,46 @@ namespace Manticoresearch;
 use Manticoresearch\Exceptions\RuntimeException;
 
 /**
- * Class Response
- * @package Manticoresearch
+ * Class Response.
  */
 class Response
 {
     /**
-     * execution time to get the response
-     * @var integer|float
+     * execution time to get the response.
+     *
+     * @var float|int
      */
     protected $time;
 
     /**
-     * raw response as string
+     * raw response as string.
+     *
      * @var string
      */
     protected $string;
 
     /**
-     * information about request
+     * information about request.
+     *
      * @var array
      */
     protected $transportInfo;
 
     protected $status;
+
     /**
-     * response as array
+     * response as array.
+     *
      * @var array
      */
     protected $response;
 
     /**
-     * additional params as array
+     * additional params as array.
+     *
      * @var array
      */
     protected $params;
-    
 
     public function __construct($responseString, $status = null, $params = [])
     {
@@ -68,7 +71,7 @@ class Response
      */
     public function getResponse()
     {
-        if (null === $this->response) {
+        if ($this->response === null) {
             $this->response = json_decode($this->string, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 if (json_last_error() === JSON_ERROR_UTF8 && $this->stripBadUtf8()) {
@@ -82,12 +85,14 @@ class Response
                 $this->response = [];
             }
         }
+
         return $this->response;
     }
-    
+
     /**
-     * check if strip_bad_utf8 as been set to true
-     * @return boolean
+     * check if strip_bad_utf8 as been set to true.
+     *
+     * @return bool
      */
     private function stripBadUtf8()
     {
@@ -101,8 +106,9 @@ class Response
     public function hasError()
     {
         $response = $this->getResponse();
-        return (isset($response['error']) && $response['error'] !== '') ||
-            (isset($response['errors']) && $response['errors'] !== false);
+
+        return (isset($response['error']) && $response['error'] !== '')
+            || (isset($response['errors']) && $response['errors'] !== false);
     }
 
     /*
@@ -114,11 +120,12 @@ class Response
         $response = $this->getResponse();
         if (isset($response['error'])) {
             return json_encode($response['error'], true);
-        } elseif (isset($response['errors'])) {
-            return json_encode($response['errors'], true);
-        } else {
-            return '';
         }
+        if (isset($response['errors'])) {
+            return json_encode($response['errors'], true);
+        }
+
+        return '';
     }
 
     /*
@@ -129,6 +136,7 @@ class Response
     public function setTime($time)
     {
         $this->time = $time;
+
         return $this;
     }
 
@@ -142,18 +150,22 @@ class Response
     }
 
     /**
-     *  set request info
+     *  set request info.
+     *
      * @param array $info
+     *
      * @return $this
      */
     public function setTransportInfo($info)
     {
         $this->transportInfo = $info;
+
         return $this;
     }
 
     /**
-     * get request info
+     * get request info.
+     *
      * @return array
      */
     public function getTransportInfo()

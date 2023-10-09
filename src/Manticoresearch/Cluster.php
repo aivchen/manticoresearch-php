@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch;
 
 use Manticoresearch\Endpoints\Cluster\Alter;
@@ -19,12 +18,13 @@ class Cluster
 
     /**
      * Pq constructor.
+     *
      * @param Client $client
      */
     public function __construct($client)
     {
         $this->client = $client;
-        $this->params =['responseClass'=>'Manticoresearch\\Response\\SqlToArray'];
+        $this->params = ['responseClass' => 'Manticoresearch\\Response\\SqlToArray'];
     }
 
     public function alter($params)
@@ -38,7 +38,8 @@ class Cluster
             $endpoint,
             array_merge($this->params, ['responseClassParams' => ['customMapping' => true]])
         );
-        return  $response->getResponse();
+
+        return $response->getResponse();
     }
 
     public function create($params)
@@ -49,7 +50,8 @@ class Cluster
         $endpoint->setCluster($cluster);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
-        return  $response->getResponse();
+
+        return $response->getResponse();
     }
 
     public function delete($params)
@@ -60,7 +62,8 @@ class Cluster
         $endpoint->setCluster($cluster);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
-        return  $response->getResponse();
+
+        return $response->getResponse();
     }
 
     public function join($params)
@@ -71,7 +74,8 @@ class Cluster
         $endpoint->setCluster($cluster);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
-        return  $response->getResponse();
+
+        return $response->getResponse();
     }
 
     public function set($params)
@@ -82,6 +86,7 @@ class Cluster
         $endpoint->setCluster($cluster);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint, $this->params);
-        return  $response->getResponse();
+
+        return $response->getResponse();
     }
 }

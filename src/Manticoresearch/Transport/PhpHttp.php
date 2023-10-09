@@ -1,34 +1,28 @@
 <?php
 
-
 namespace Manticoresearch\Transport;
 
 use Http\Discovery\MessageFactoryDiscovery;
-
 use Manticoresearch\Connection;
 use Manticoresearch\Exceptions\ConnectionException;
 use Manticoresearch\Exceptions\ResponseException;
 use Manticoresearch\Request;
 use Manticoresearch\Response;
 use Manticoresearch\Transport;
-
 use Http\Discovery\HttpClientDiscovery;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class PhpHttp
- * @package Manticoresearch\Transport
+ * Class PhpHttp.
  */
 class PhpHttp extends Transport implements TransportInterface
 {
     protected $client;
     protected $messageFactory;
+
     /**
      * PhpHttp constructor.
-     * @param Connection|null $connection
-     * @param LoggerInterface|null $logger
      */
-
     public function __construct(Connection $connection = null, LoggerInterface $logger = null)
     {
         $this->client = HttpClientDiscovery::find();
@@ -37,9 +31,10 @@ class PhpHttp extends Transport implements TransportInterface
     }
 
     /**
-     * @param Request $request
      * @param array $params
+     *
      * @return Response
+     *
      * @throws \Http\Client\Exception
      */
     public function execute(Request $request, $params = [])
@@ -66,6 +61,7 @@ class PhpHttp extends Transport implements TransportInterface
         }
         $start = microtime(true);
         $message = $this->messageFactory->createRequest($method, $url, $headers, $content);
+
         try {
             $responsePSR = $this->client->sendRequest($message);
         } catch (\Exception $e) {
@@ -77,22 +73,22 @@ class PhpHttp extends Transport implements TransportInterface
 
         if (isset($params['responseClass'])) {
             $responseClass = $params['responseClass'];
-            $responseClassParams = isset($params['responseClassParams'])?$params['responseClassParams']:[];
+            $responseClassParams = $params['responseClassParams'] ?? [];
             $response = new $responseClass($responseString, $status, $responseClassParams);
         } else {
             $response = new Response($responseString, $status);
         }
 
-        $time = $end-$start;
+        $time = $end - $start;
         $response->setTime($time);
         $response->setTransportInfo([
             'url' => $url,
             'headers' => $headers,
-            'body' => $request->getBody()
+            'body' => $request->getBody(),
         ]);
         $this->logger->debug('Request body:', [
             'connection' => $connection->getConfig(),
-            'payload'=> $request->getBody()
+            'payload' => $request->getBody(),
         ]);
         $this->logger->info('Request:', [
             'url' => $url,
@@ -107,8 +103,10 @@ class PhpHttp extends Transport implements TransportInterface
                 'error' => $response->getError(),
                 'payload' => $request->getBody(),
             ]);
+
             throw new ResponseException($request, $response);
         }
+
         return $response;
     }
 }

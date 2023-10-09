@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Indices;
 
 use Manticoresearch\Endpoints\EmulateBySql;
@@ -21,11 +20,13 @@ class Import extends EmulateBySql
                     'query' => 'IMPORT TABLE ' .
                         $this->index .
                         ' FROM ' .
-                        $params['path']
+                        $params['path'],
                 ]);
             }
+
             throw new RuntimeException('Missing import index path in /indices/import');
         }
+
         throw new RuntimeException('Missing index name in /indices/import');
     }
 

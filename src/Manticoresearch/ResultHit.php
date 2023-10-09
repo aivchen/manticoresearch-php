@@ -1,15 +1,16 @@
 <?php
 
-
 namespace Manticoresearch;
 
 /**
  * Result hit object
- * Element of a result set
+ * Element of a result set.
+ *
  * @category ManticoreSearch
- * @package ManticoreSearch
+ *
  * @author Adrian Nuta <adrian.nuta@manticoresearch.com>
- * @link https://manticoresearch.com
+ *
+ * @see https://manticoresearch.com
  */
 class ResultHit
 {
@@ -40,7 +41,6 @@ class ResultHit
         return $this->data['highlight'];
     }
 
-
     public function __get(string $key)
     {
         return $this->get($key);
@@ -48,7 +48,7 @@ class ResultHit
 
     public function __isset(string $key): bool
     {
-        return $this->has($key) && null !== $this->get($key);
+        return $this->has($key) && $this->get($key) !== null;
     }
 
     public function get($key)
@@ -56,9 +56,9 @@ class ResultHit
         if (isset($this->data['_source'][$key])) {
             return $this->data['_source'][$key];
         }
+
         return [];
     }
-
 
     public function has($key)
     {

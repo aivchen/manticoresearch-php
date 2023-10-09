@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Indices;
 
 use Manticoresearch\Endpoints\EmulateBySql;
@@ -16,12 +15,14 @@ class Drop extends EmulateBySql
     public function setBody($params = null)
     {
         if (isset($this->index)) {
-            return parent::setBody(['query' => "DROP TABLE " .
-                (isset($params['silent']) && $params['silent']===true?' IF EXISTS ':'').
+            return parent::setBody(['query' => 'DROP TABLE ' .
+                (isset($params['silent']) && $params['silent'] === true ? ' IF EXISTS ' : '') .
                 $this->index]);
         }
+
         throw new RuntimeException('Missing index name in /indices/drop');
     }
+
     /**
      * @return mixed
      */

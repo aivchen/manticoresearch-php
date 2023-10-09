@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Exceptions;
 
 use Manticoresearch\Request;
 
 /**
- * Class ConnectionException
- * @package Manticoresearch\Exceptions
+ * Class ConnectionException.
  */
 class ConnectionException extends \RuntimeException implements ExceptionInterface
 {
@@ -18,8 +16,8 @@ class ConnectionException extends \RuntimeException implements ExceptionInterfac
 
     /**
      * ConnectionException constructor.
+     *
      * @param string $message
-     * @param Request|null $request
      */
     public function __construct($message = '', Request $request = null)
     {
@@ -28,7 +26,7 @@ class ConnectionException extends \RuntimeException implements ExceptionInterfac
     }
 
     /**
-     * @return Request|null
+     * @return null|Request
      */
     public function getRequest()
     {

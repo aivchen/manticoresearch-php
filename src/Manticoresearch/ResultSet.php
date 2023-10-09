@@ -1,16 +1,17 @@
 <?php
 
-
 namespace Manticoresearch;
 
 /**
  * Manticore result set
  *  List hits returned by a search
- *  Implements iterator and countable
+ *  Implements iterator and countable.
+ *
  * @category ManticoreSearch
- * @package ManticoreSearch
+ *
  * @author Adrian Nuta <adrian.nuta@manticoresearch.com>
- * @link https://manticoresearch.com
+ *
+ * @see https://manticoresearch.com
  * @see \Iterator
  */
 class ResultSet implements \Iterator, \Countable
@@ -67,7 +68,7 @@ class ResultSet implements \Iterator, \Countable
 
     public function next(): void
     {
-        $this->position++;
+        ++$this->position;
     }
 
     public function valid(): bool

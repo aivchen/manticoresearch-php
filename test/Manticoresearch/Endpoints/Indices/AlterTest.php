@@ -15,7 +15,7 @@ class AlterTest extends \PHPUnit\Framework\TestCase
     /** @var PopulateHelperTest */
     private static $helper;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -31,10 +31,9 @@ class AlterTest extends \PHPUnit\Framework\TestCase
             'index' => 'products',
             'body' => [
                 'column' => [
-                    'name' => 'price'
-                ]
-
-            ]
+                    'name' => 'price',
+                ],
+            ],
         ];
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Operation is missing.');
@@ -44,14 +43,13 @@ class AlterTest extends \PHPUnit\Framework\TestCase
     public function testIndexDropColumn()
     {
         $params = [
-        'index' => 'products',
-        'body' => [
-            'operation' => 'drop',
-            'column' => [
-                'name' => 'price'
-            ]
-
-        ]
+            'index' => 'products',
+            'body' => [
+                'operation' => 'drop',
+                'column' => [
+                    'name' => 'price',
+                ],
+            ],
         ];
         $response = self::$client->indices()->alter($params);
         $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
@@ -60,16 +58,14 @@ class AlterTest extends \PHPUnit\Framework\TestCase
         $response = self::$client->indices()->describe(['index' => 'products']);
 
         $expectedResponse = [
-        'id' =>
-            [
+            'id' => [
                 'Type' => 'bigint',
                 'Properties' => '',
             ],
-        'title' =>
-            [
+            'title' => [
                 'Type' => 'field',
                 'Properties' => 'indexed stored',
-            ]
+            ],
         ];
         $this->assertEquals(array_keys($expectedResponse), array_keys($response));
     }
@@ -82,40 +78,35 @@ class AlterTest extends \PHPUnit\Framework\TestCase
                 'operation' => 'add',
                 'column' => [
                     'name' => 'tag',
-                    'type'=> 'string'
-                ]
-
-            ]
+                    'type' => 'string',
+                ],
+            ],
         ];
         $response = self::$client->indices()->alter($params);
-        $this->assertEquals(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
 
         // check the column has been added using the Describe endpoint
         $response = self::$client->indices()->describe(['index' => 'products']);
 
         $expectedResponse = [
-            'id' =>
-                [
-                    'Type' => 'bigint',
-                    'Properties' => '',
-                ],
-            'title' =>
-                [
-                    'Type' => 'field',
-                    'Properties' => 'indexed stored',
-                ],
-            'price' =>
-                [
-                    'Type' => 'float',
-                    'Properties' => '',
-                ],
+            'id' => [
+                'Type' => 'bigint',
+                'Properties' => '',
+            ],
+            'title' => [
+                'Type' => 'field',
+                'Properties' => 'indexed stored',
+            ],
+            'price' => [
+                'Type' => 'float',
+                'Properties' => '',
+            ],
 
             // this is the new column
-            'tag' =>
-                [
-                    'Type' => 'string',
-                    'Properties' => '',
-                ]
+            'tag' => [
+                'Type' => 'string',
+                'Properties' => '',
+            ],
         ];
         $this->assertEquals(array_keys($expectedResponse), array_keys($response));
     }

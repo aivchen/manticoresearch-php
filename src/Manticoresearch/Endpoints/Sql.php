@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints;
 
 use Manticoresearch\Request;
 
 /**
- * Class Sql
- * @package Manticoresearch\Endpoints
+ * Class Sql.
  */
 class Sql extends Request
 {
@@ -15,6 +13,7 @@ class Sql extends Request
      * @return mixed|string
      */
     protected $mode;
+
     public function getPath()
     {
         return '/sql';
@@ -36,12 +35,13 @@ class Sql extends Request
         if ($this->mode === 'raw') {
             $return = ['mode=raw'];
             foreach ($this->body as $k => $v) {
-                $return[]= $k.'='.urlencode($v);
+                $return[] = $k . '=' . urlencode($v);
             }
+
             return implode('&', $return);
-        } else {
-            return http_build_query($this->body);
         }
+
+        return http_build_query($this->body);
     }
 
     public function getMode()

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Nodes;
 
 use Manticoresearch\Endpoints\EmulateBySql;
@@ -17,11 +16,11 @@ class Threads extends EmulateBySql
         $options = [];
         if (count($params) > 2) {
             foreach (array_splice($params, 2) as $name => $value) {
-                $options[] = "$value=$name";
+                $options[] = "{$value}={$name}";
             }
         }
 
-        return parent::setBody(['query' => "SHOW THREADS " .
-            ((count($options)>0)?' OPTION '.implode(",", $options):'')]);
+        return parent::setBody(['query' => 'SHOW THREADS ' .
+            ((count($options) > 0) ? ' OPTION ' . implode(',', $options) : '')]);
     }
 }

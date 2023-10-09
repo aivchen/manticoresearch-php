@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Helper;
 
 use Manticoresearch\Client;
@@ -18,9 +19,10 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $this->client = new Client($params);
+
         return $this->client;
     }
 
@@ -30,8 +32,8 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
 
         $this->client->indices()->drop([
             'index' => 'products',
-                'body' => ['silent' => true]
-            ]);
+            'body' => ['silent' => true],
+        ]);
 
         $params = [
             'index' => 'products',
@@ -39,29 +41,29 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
+                        'options' => ['indexed', 'stored'],
                     ],
                     'price' => [
-                        'type' => 'float'
-                    ]
+                        'type' => 'float',
+                    ],
                 ],
                 'settings' => [
                     'rt_mem_limit' => '256M',
-                    'min_infix_len' => '3'
+                    'min_infix_len' => '3',
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         $this->client->indices()->create($params);
         $this->client->replace([
-            'body'=> [
+            'body' => [
                 'index' => 'products',
-                'id'=> 100,
+                'id' => 100,
                 'doc' => [
-                    'title' =>'this product is not broken',
-                    'price' => 2.99
-                ]
-            ]
+                    'title' => 'this product is not broken',
+                    'price' => 2.99,
+                ],
+            ],
         ]);
     }
 
@@ -75,17 +77,18 @@ class PopulateHelperTest extends \PHPUnit\Framework\TestCase
                 'query' => [
                     'match' => ['*' => $query],
                 ],
-            ]
+            ],
         ];
         $results = $this->client->search($search);
         $actualTotal = $results['hits']['total'];
         $this->assertEquals($numberOfResultsExpected, $actualTotal);
+
         return $results;
     }
 
     public function describe($indexName)
     {
-        return $this->client->indices()->describe(['index'=> $indexName]);
+        return $this->client->indices()->describe(['index' => $indexName]);
     }
 
     public function nodeStatus($indexName)

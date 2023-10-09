@@ -14,7 +14,7 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         static::$client = new Client($params);
         $params = [
@@ -23,18 +23,18 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
+                        'options' => ['indexed', 'stored'],
                     ],
                     'price' => [
-                        'type' => 'float'
-                    ]
+                        'type' => 'float',
+                    ],
                 ],
                 'settings' => [
                     'rt_mem_limit' => '256M',
-                    'min_infix_len' => '3'
+                    'min_infix_len' => '3',
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         static::$client->indices()->create($params);
         static::$client->replace([
@@ -43,9 +43,9 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
                 'id' => 100,
                 'doc' => [
                     'title' => 'this product is not broken',
-                    'price' => 2.99
-                ]
-            ]
+                    'price' => 2.99,
+                ],
+            ],
         ]);
     }
 
@@ -57,9 +57,9 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
                 'query' => 'product',
                 'options' => [
                     'stats' => 1,
-                    'fold_lemmas' => 1
-                ]
-            ]
+                    'fold_lemmas' => 1,
+                ],
+            ],
         ];
         $response = static::$client->keywords($params);
         $this->assertSame('product', $response['0']['normalized']);
@@ -72,9 +72,9 @@ class HelpersTest extends \PHPUnit\Framework\TestCase
             'body' => [
                 'query' => 'brokn',
                 'options' => [
-                    'limit' => 5
-                ]
-            ]
+                    'limit' => 5,
+                ],
+            ],
         ];
         $response = static::$client->suggest($params);
         $this->assertSame('broken', array_keys($response)[0]);

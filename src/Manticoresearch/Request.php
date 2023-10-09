@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Manticoresearch;
 
 /**
- * Class Request
- * @package Manticoresearch
+ * Class Request.
  */
 class Request
 {
@@ -13,18 +11,22 @@ class Request
      * @var string
      */
     protected $path;
+
     /**
      * @var string
      */
     protected $method;
+
     /**
      * @var array|string
      */
     protected $body;
+
     /**
      * @var string
      */
     protected $query;
+
     /**
      * @var string
      */
@@ -32,7 +34,7 @@ class Request
 
     public function __construct($params = [])
     {
-        if (count($params)>0) {
+        if (count($params) > 0) {
             $this->setBody($params['body'] ?? []);
             $this->setQuery($params['query'] ?? []);
             $this->setContentType($params['content_type'] ?? 'application/json');
@@ -66,10 +68,10 @@ class Request
     /**
      * @param mixed $body
      */
-
     public function setBody($body = null)
     {
         $this->body = $body;
+
         return $this;
     }
 
@@ -120,9 +122,8 @@ class Request
     {
         $this->query = $query;
     }
-    /*
-     * #return string
-     */
+
+    // #return string
     public function toArray()
     {
         return [
@@ -130,7 +131,7 @@ class Request
             'method' => $this->getMethod(),
             'content_type' => $this->getContentType(),
             'query' => $this->getQuery(),
-            'body' => $this->getBody()
+            'body' => $this->getBody(),
         ];
     }
 }

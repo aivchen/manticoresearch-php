@@ -5,8 +5,7 @@ namespace Manticoresearch\Endpoints\Pq;
 use Manticoresearch\Exceptions\RuntimeException;
 
 /**
- * Class Doc
- * @package Manticoresearch\Endpoints\Pq
+ * Class Doc.
  */
 class Doc extends \Manticoresearch\Request
 {
@@ -14,8 +13,9 @@ class Doc extends \Manticoresearch\Request
      * @var string
      */
     protected $index;
+
     /**
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -34,11 +34,12 @@ class Doc extends \Manticoresearch\Request
     {
         if (isset($this->index)) {
             if (isset($this->id)) {
-                return "/json/pq/" . $this->index . "/doc/" . $this->id;
-            } else {
-                return "/json/pq/" . $this->index . "/doc";
+                return '/json/pq/' . $this->index . '/doc/' . $this->id;
             }
+
+            return '/json/pq/' . $this->index . '/doc';
         }
+
         throw new RuntimeException('Index name is missing.');
     }
 

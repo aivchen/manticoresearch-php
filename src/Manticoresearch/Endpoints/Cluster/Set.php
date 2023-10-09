@@ -1,16 +1,15 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Cluster;
 
 use Manticoresearch\Endpoints\EmulateBySql;
-use Manticoresearch\Endpoints\Sql;
 use Manticoresearch\Exceptions\RuntimeException;
 use Manticoresearch\Utils;
 
 class Set extends EmulateBySql
 {
     use Utils;
+
     /**
      * @var string
      */
@@ -20,11 +19,12 @@ class Set extends EmulateBySql
     {
         if (isset($params['variable'])) {
             return parent::setBody([
-                'query' => "SET CLUSTER" . $this->cluster . " GLOBAL '" . $params['variable']['name'], "'=" .
+                'query' => 'SET CLUSTER' . $this->cluster . " GLOBAL '" . $params['variable']['name'], "'=" .
                 (is_numeric($params['variable']['value']) ?
-                    $params['variable']['value'] : "'" . $params['variable']['value'] . "'")
+                    $params['variable']['value'] : "'" . $params['variable']['value'] . "'"),
             ]);
         }
+
         throw new RuntimeException('Variable is missing for /cluster/set');
     }
 

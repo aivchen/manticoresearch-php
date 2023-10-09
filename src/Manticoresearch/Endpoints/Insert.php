@@ -1,13 +1,11 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints;
 
 use Manticoresearch\Request;
 
 /**
- * Class Insert
- * @package Manticoresearch\Endpoints
+ * Class Insert.
  */
 class Insert extends Request
 {

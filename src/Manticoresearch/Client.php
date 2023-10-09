@@ -7,7 +7,6 @@ namespace Manticoresearch;
 use Manticoresearch\Connection\ConnectionPool;
 use Manticoresearch\Connection\Strategy\SelectorInterface;
 use Manticoresearch\Connection\Strategy\StaticRoundRobin;
-
 use Manticoresearch\Endpoints\Pq;
 use Manticoresearch\Exceptions\ConnectionException;
 use Manticoresearch\Exceptions\NoMoreNodesException;
@@ -16,27 +15,28 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * Manticore  client object
- * @package Manticoresearch
+ * Manticore  client object.
+ *
  * @category Manticoresearch
+ *
  * @author Adrian Nuta <adrian.nuta@manticoresearch.com>
- * @link https://manticoresearch.com
+ *
+ * @see https://manticoresearch.com
  */
 class Client
 {
-    /**
-     *
-     */
-    const VERSION = '1.0.0';
+    public const VERSION = '1.0.0';
 
     /**
      * @var array
      */
     protected $config = [];
+
     /**
      * @var string
      */
     private $connectionStrategy = StaticRoundRobin::class;
+
     /**
      * @var ConnectionPool
      */
@@ -96,20 +96,20 @@ class Client
                 throw new RuntimeException('Cannot create a strategy based on provided settings!');
             }
         } else {
-            $strategy = new $this->connectionStrategy;
+            $strategy = new $this->connectionStrategy();
         }
         if (!isset($this->config['retries'])) {
             $this->config['retries'] = count($connections);
         }
         $this->connectionPool = new Connection\ConnectionPool(
             $connections,
-            $strategy ?? new $this->connectionStrategy,
+            $strategy ?? new $this->connectionStrategy(),
             $this->config['retries']
         );
     }
 
     /**
-     * @param string|array $hosts
+     * @param array|string $hosts
      */
     public function setHosts($hosts)
     {
@@ -118,18 +118,17 @@ class Client
     }
 
     /**
-     * @param array $config
      * @return $this
      */
     public function setConfig(array $config): self
     {
         $this->config = array_merge($this->config, $config);
+
         return $this;
     }
 
     /**
      * @param array $config
-     * @return Client
      */
     public static function create($config): Client
     {
@@ -138,7 +137,6 @@ class Client
 
     /**
      * @param array $config
-     * @return Client
      */
     public static function createFromArray($config): Client
     {
@@ -153,18 +151,16 @@ class Client
         return $this->connectionPool->getConnections();
     }
 
-    /**
-     * @return ConnectionPool
-     */
     public function getConnectionPool(): ConnectionPool
     {
         return $this->connectionPool;
     }
 
     /**
-     * Endpoint: search
-     * @param array $params
+     * Endpoint: search.
+     *
      * @param bool $obj
+     *
      * @return array|Response
      */
     public function search(array $params = [], $obj = false)
@@ -173,14 +169,14 @@ class Client
         $response = $this->request($endpoint);
         if ($obj === true) {
             return $response;
-        } else {
-            return $response->getResponse();
         }
+
+        return $response->getResponse();
     }
 
     /**
-     * Endpoint: insert
-     * @param array $params
+     * Endpoint: insert.
+     *
      * @return array
      */
     public function insert(array $params = [])
@@ -192,8 +188,8 @@ class Client
     }
 
     /**
-     * Endpoint: replace
-     * @param array $params
+     * Endpoint: replace.
+     *
      * @return mixed
      */
     public function replace(array $params = [])
@@ -205,8 +201,8 @@ class Client
     }
 
     /**
-     * Endpoint: update
-     * @param array $params
+     * Endpoint: update.
+     *
      * @return array
      */
     public function update(array $params = [])
@@ -217,10 +213,11 @@ class Client
         return $response->getResponse();
     }
 
-
     /**
-     * Endpoint: sql
+     * Endpoint: sql.
+     *
      * @param mixed $params
+     *
      * @return array
      *
      * $params can be either two parameters (string $query, bool $rawMode = false),
@@ -232,7 +229,7 @@ class Client
         if (is_string($params[0])) {
             $params = [
                 'body' => [
-                    'query' => $params[0]
+                    'query' => $params[0],
                 ],
                 'mode' => !empty($params[1]) && is_bool($params[1]) ? 'raw' : '',
             ];
@@ -246,12 +243,13 @@ class Client
         } else {
             $response = $this->request($endpoint);
         }
+
         return $response->getResponse();
     }
 
     /**
-     * Endpoint: delete
-     * @param array $params
+     * Endpoint: delete.
+     *
      * @return array
      */
     public function delete(array $params = [])
@@ -263,7 +261,7 @@ class Client
     }
 
     /**
-     * Endpoint: pq
+     * Endpoint: pq.
      */
     public function pq(): Pq
     {
@@ -271,7 +269,7 @@ class Client
     }
 
     /**
-     * Endpoint: indices
+     * Endpoint: indices.
      */
     public function indices(): Indices
     {
@@ -279,7 +277,7 @@ class Client
     }
 
     /**
-     * Endpoint: nodes
+     * Endpoint: nodes.
      */
     public function nodes(): Nodes
     {
@@ -292,11 +290,9 @@ class Client
     }
 
     /**
-     * Return Index object
+     * Return Index object.
      *
-     * @param string|null $name Name of index
-     *
-     * @return \Manticoresearch\Index
+     * @param null|string $name Name of index
      */
     public function index(string $name = null): Index
     {
@@ -304,8 +300,8 @@ class Client
     }
 
     /**
-     * Endpoint: bulk
-     * @param array $params
+     * Endpoint: bulk.
+     *
      * @return array
      */
     public function bulk(array $params = [])
@@ -317,8 +313,8 @@ class Client
     }
 
     /**
-     * Endpoint: suggest
-     * @param array $params
+     * Endpoint: suggest.
+     *
      * @return array
      */
     public function suggest(array $params = [])
@@ -330,9 +326,10 @@ class Client
             $endpoint,
             [
                 'responseClass' => 'Manticoresearch\\Response\\SqlToArray',
-                'responseClassParams' => ['customMapping' => true]
+                'responseClassParams' => ['customMapping' => true],
             ]
         );
+
         return $response->getResponse();
     }
 
@@ -342,6 +339,7 @@ class Client
         $endpoint->setIndex($params['index']);
         $endpoint->setBody($params['body']);
         $response = $this->request($endpoint, ['responseClass' => 'Manticoresearch\\Response\\SqlToArray']);
+
         return $response->getResponse();
     }
 
@@ -354,16 +352,14 @@ class Client
             $endpoint,
             [
                 'responseClass' => 'Manticoresearch\\Response\\SqlToArray',
-                'responseClassParams' => ['customMapping' => true]
+                'responseClassParams' => ['customMapping' => true],
             ]
         );
+
         return $response->getResponse();
     }
 
-
-    /*
-     * @return Response
-     */
+    // @return Response
 
     public function request(Request $request, array $params = []): Response
     {
@@ -373,17 +369,18 @@ class Client
         } catch (NoMoreNodesException $e) {
             $this->logger->error('Manticore Search Request out of retries:', [
                 'exception' => $e->getMessage(),
-                'request' => $request->toArray()
+                'request' => $request->toArray(),
             ]);
 
             $this->initConnections();
+
             throw $e;
         } catch (ConnectionException $e) {
             $this->logger->warning(
                 'Manticore Search Request failed on attempt ' . $this->connectionPool->retries_attempts . ':',
                 [
                     'exception' => $e->getMessage(),
-                    'request' => $e->getRequest()->toArray()
+                    'request' => $e->getRequest()->toArray(),
                 ]
             );
 
@@ -393,13 +390,11 @@ class Client
 
             return $this->request($request, $params);
         }
+
         return $this->lastResponse;
     }
 
-    /*
- *
- * @return Response
- */
+    // @return Response
 
     public function getLastResponse(): Response
     {

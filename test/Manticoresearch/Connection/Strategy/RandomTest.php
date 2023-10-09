@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Connection\Strategy;
 
 use Manticoresearch\Client;
@@ -12,39 +13,38 @@ class RandomTest extends TestCase
         // seed the random number generator, to obtain consistent results
         srand(1000);
 
-        $client = new Client(["connectionStrategy"  =>"Random"]);
+        $client = new Client(['connectionStrategy'  => 'Random']);
         $client->setHosts([
             [
                 'host' => $_SERVER['MS_HOST'],
-                'port' => (int)($_SERVER['MS_PORT']),
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+                'port' => (int) $_SERVER['MS_PORT'],
+                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
             ],
             [
                 'host' => $_SERVER['MS_HOST'],
                 'port' => 9309,
-                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+                'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
             ],
-
         ]);
 
         $connection = $client->getConnectionPool()->getConnection();
         $this->assertSame($_SERVER['MS_HOST'], $connection->getHost());
-        $this->assertSame((int)$_SERVER['MS_PORT'], $connection->getPort());
+        $this->assertSame((int) $_SERVER['MS_PORT'], $connection->getPort());
 
         $connection = $client->getConnectionPool()->getConnection();
         $this->assertSame($_SERVER['MS_HOST'], $connection->getHost());
-        $this->assertSame((int)$_SERVER['MS_PORT'], $connection->getPort());
+        $this->assertSame((int) $_SERVER['MS_PORT'], $connection->getPort());
 
         $connection = $client->getConnectionPool()->getConnection();
         $this->assertSame($_SERVER['MS_HOST'], $connection->getHost());
-        $this->assertSame((int)$_SERVER['MS_PORT'], $connection->getPort());
+        $this->assertSame((int) $_SERVER['MS_PORT'], $connection->getPort());
 
         $connection = $client->getConnectionPool()->getConnection();
         $this->assertSame($_SERVER['MS_HOST'], $connection->getHost());
         $this->assertSame($_SERVER['MS_HOST'], $connection->getHost());
 
         $mConns = [];
-        for ($i=0; $i<10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $mConns[] = mock::mock(\Manticoresearch\Connection::class)
                 ->shouldReceive('isAlive')->andReturn(true)->getMock();
         }

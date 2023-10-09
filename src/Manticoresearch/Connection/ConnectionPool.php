@@ -4,12 +4,10 @@ namespace Manticoresearch\Connection;
 
 use Manticoresearch\Connection;
 use Manticoresearch\Connection\Strategy\SelectorInterface;
-use Manticoresearch\Exceptions\ConnectionException;
 use Manticoresearch\Exceptions\NoMoreNodesException;
 
 /**
- * Class ConnectionPool
- * @package Manticoresearch\Connection
+ * Class ConnectionPool.
  */
 class ConnectionPool
 {
@@ -25,7 +23,7 @@ class ConnectionPool
 
     public $retries;
 
-    public $retries_attempts =0;
+    public $retries_attempts = 0;
 
     public function __construct(array $connections, SelectorInterface $strategy, int $retries)
     {
@@ -34,24 +32,19 @@ class ConnectionPool
         $this->retries = $retries;
     }
 
-    /**
-     * @return array
-     */
     public function getConnections(): array
     {
         return $this->connections;
     }
 
-    /**
-     * @param array $connections
-     */
     public function setConnections(array $connections)
     {
         $this->connections = $connections;
     }
+
     public function getConnection(): Connection
     {
-        $this->retries_attempts++;
+        ++$this->retries_attempts;
         $connection =   $this->strategy->getConnection($this->connections);
         if ($connection->isAlive()) {
             return $connection;
@@ -61,6 +54,7 @@ class ConnectionPool
         }
         $exMsg = 'After %d retr%s to %d node%s, connection has failed. No more retries left.';
         $connCount = count($this->connections);
+
         throw new NoMoreNodesException(
             sprintf($exMsg, $this->retries, $this->retries > 1 ? 'ies' : 'y', $connCount, $connCount > 1 ? 's' : '')
         );
@@ -71,17 +65,11 @@ class ConnectionPool
         return $this->retries_attempts < $this->retries;
     }
 
-    /**
-     * @return SelectorInterface
-     */
     public function getStrategy(): SelectorInterface
     {
         return $this->strategy;
     }
 
-    /**
-     * @param SelectorInterface $strategy
-     */
     public function setStrategy(SelectorInterface $strategy)
     {
         $this->strategy = $strategy;

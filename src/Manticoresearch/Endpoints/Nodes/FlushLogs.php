@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Nodes;
 
 use Manticoresearch\Endpoints\EmulateBySql;
@@ -9,6 +8,7 @@ use Manticoresearch\Utils;
 class FlushLogs extends EmulateBySql
 {
     use Utils;
+
     /**
      * @var string
      */
@@ -16,6 +16,6 @@ class FlushLogs extends EmulateBySql
 
     public function setBody($params = null)
     {
-        return parent::setBody(['query' => "FLUSH LOGS"]);
+        return parent::setBody(['query' => 'FLUSH LOGS']);
     }
 }

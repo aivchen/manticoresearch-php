@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Indices;
 
 use Manticoresearch\Endpoints\EmulateBySql;
@@ -10,6 +9,7 @@ use Manticoresearch\Utils;
 class FlushRtindex extends EmulateBySql
 {
     use Utils;
+
     /**
      * @var string
      */
@@ -17,12 +17,13 @@ class FlushRtindex extends EmulateBySql
 
     public function setBody($params = null)
     {
-
         if (isset($this->index)) {
-            return parent::setBody(['query' => "FLUSH RTINDEX ".$this->index]);
+            return parent::setBody(['query' => 'FLUSH RTINDEX ' . $this->index]);
         }
+
         throw new RuntimeException('Index name is missing.');
     }
+
     /**
      * @return mixed
      */

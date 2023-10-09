@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Endpoints\Nodes\Set;
@@ -7,9 +8,8 @@ use Manticoresearch\Test\Helper\PopulateHelperTest;
 
 class SetTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
-     * See https://manual.manticoresearch.com/Server_settings/Setting_variables_online#SET
+     * See https://manual.manticoresearch.com/Server_settings/Setting_variables_online#SET.
      */
     public function testSet()
     {
@@ -19,12 +19,12 @@ class SetTest extends \PHPUnit\Framework\TestCase
             'body' => [
                 'variable' => [
                     'name' => 'PROFILING',
-                    'value' => 0
-                ]
-            ]
+                    'value' => 0,
+                ],
+            ],
         ];
         $response = $client->nodes()->set($payload);
-        $this->assertEquals(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertEquals(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
     public function testSetBodyNoVariable()

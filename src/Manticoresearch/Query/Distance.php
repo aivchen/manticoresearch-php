@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Query;
 
 use Manticoresearch\Exceptions\RuntimeException;
@@ -10,6 +9,7 @@ class Distance extends Query
 {
     /**
      * Distance constructor.
+     *
      * @param array $args
      */
     public function __construct($args = [])
@@ -45,7 +45,7 @@ class Distance extends Query
     }
 
     /**
-     * @param array|string  $source Either an array or comma separated string of the fields to reference for lat & lon
+     * @param array|string $source Either an array or comma separated string of the fields to reference for lat & lon
      */
     public function setSource($source)
     {
@@ -56,7 +56,7 @@ class Distance extends Query
     }
 
     /**
-     * Set the location of the anchor, namely the point by which distances will be measured from
+     * Set the location of the anchor, namely the point by which distances will be measured from.
      *
      * @param float $lat the latitude of the anchor
      * @param float $lon the longitude of the anchor

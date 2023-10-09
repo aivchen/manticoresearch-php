@@ -32,17 +32,16 @@ class DescribeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(array_keys([
             'id' => [
                 'Type' => 'bigint',
-                'Properties' => ''
+                'Properties' => '',
             ],
             'title' => [
                 'Type' => 'field',
-                'Properties' => 'indexed stored'
+                'Properties' => 'indexed stored',
             ],
             'price' => [
                 'Type' => 'float',
-                'Properties' => ''
+                'Properties' => '',
             ],
-
         ]), array_keys($response));
     }
 

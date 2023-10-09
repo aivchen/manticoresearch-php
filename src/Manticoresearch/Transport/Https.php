@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Manticoresearch\Transport;
 
 /**
- * Class Https
- * @package Manticoresearch\Transport
+ * Class Https.
  */
 class Https extends Http
 {

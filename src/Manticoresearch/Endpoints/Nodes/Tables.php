@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints\Nodes;
 
 use Manticoresearch\Endpoints\EmulateBySql;
@@ -14,7 +13,7 @@ class Tables extends EmulateBySql
 
     public function setBody($params = null)
     {
-        return parent::setBody(['query' => "SHOW TABLES " .
-            (isset($params['pattern']) ? " LIKE '" . $params['pattern'] . "'" : "")]);
+        return parent::setBody(['query' => 'SHOW TABLES ' .
+            (isset($params['pattern']) ? " LIKE '" . $params['pattern'] . "'" : '')]);
     }
 }

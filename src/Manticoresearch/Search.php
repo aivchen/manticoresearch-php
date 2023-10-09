@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch;
 
 use Manticoresearch\Query\BoolQuery;
@@ -14,17 +13,19 @@ use Manticoresearch\Query\Range;
 use Manticoresearch\Query\ScriptFields;
 
 /**
- * Manticore search object
+ * Manticore search object.
+ *
  * @category ManticoreSearch
- * @package ManticoreSearch
+ *
  * @author Adrian Nuta <adrian.nuta@manticoresearch.com>
- * @link https://manticoresearch.com
+ *
+ * @see https://manticoresearch.com
  */
 class Search
 {
-    const FILTER_AND = "AND";
-    const FILTER_OR = "OR";
-    const FILTER_NOT = "NOT";
+    public const FILTER_AND = 'AND';
+    public const FILTER_OR = 'OR';
+    public const FILTER_NOT = 'NOT';
 
     /**
      * @var Client
@@ -33,6 +34,7 @@ class Search
 
     protected $query;
     protected $body;
+
     /**
      * @var array
      */
@@ -55,12 +57,14 @@ class Search
     public function setIndex($index): self
     {
         $this->params['index'] = $index;
+
         return $this;
     }
 
     public function setSource($source): self
     {
         $this->params['_source'] = $source;
+
         return $this;
     }
 
@@ -69,7 +73,7 @@ class Search
         if (is_null($trackScores)) {
             unset($this->params['track_scores']);
         } else {
-            $this->params['track_scores'] = (bool)$trackScores;
+            $this->params['track_scores'] = (bool) $trackScores;
         }
 
         return $this;
@@ -80,55 +84,62 @@ class Search
         if (is_null($stripBadUtf8)) {
             unset($this->params['strip_bad_utf8']);
         } else {
-            $this->params['strip_bad_utf8'] = (bool)$stripBadUtf8;
+            $this->params['strip_bad_utf8'] = (bool) $stripBadUtf8;
         }
-        
+
         return $this;
     }
-    
+
     /**
-     * @param string|BoolQuery $queryString
+     * @param BoolQuery|string $queryString
+     *
      * @return $this
      */
     public function search($queryString): self
     {
         if (is_object($queryString)) {
             $this->query = $queryString;
+
             return $this;
         }
         $this->query->must(new QueryString($queryString));
+
         return $this;
     }
 
     public function match($keywords, $fields = null): self
     {
-        $f = "*";
+        $f = '*';
         if ($fields !== null && is_string($fields)) {
             $f = $fields;
         }
         $this->query->must(new MatchQuery($keywords, $f));
+
         return $this;
     }
 
     public function phrase($string, $fields = null): self
     {
-        $f = "*";
+        $f = '*';
         if ($fields !== null && is_string($fields)) {
             $f = $fields;
         }
         $this->query->must(new MatchPhrase($string, $f));
+
         return $this;
     }
 
     public function limit($limit): self
     {
         $this->params['limit'] = $limit;
+
         return $this;
     }
 
     /**
      * @param string $name
      * @param string $exp
+     *
      * @return $this
      */
     public function expression($name, $exp): self
@@ -137,31 +148,34 @@ class Search
             $this->params['script_fields'] = new ScriptFields();
         }
         $this->params['script_fields']->add($name, $exp);
+
         return $this;
     }
 
     public function highlight($fields = [], $settings = []): self
     {
-
-        if (count($fields) === 0 && count($settings)===0) {
+        if (count($fields) === 0 && count($settings) === 0) {
             $this->params['highlight'] =  new \stdClass();
+
             return $this;
         }
         $this->params['highlight'] = [];
         if (count($fields) > 0) {
-            $this->params['highlight']['fields'] =$fields;
+            $this->params['highlight']['fields'] = $fields;
         }
-        if (count($settings)>0) {
+        if (count($settings) > 0) {
             foreach ($settings as $name => $value) {
-                $this->params['highlight'][$name] =$value;
+                $this->params['highlight'][$name] = $value;
             }
         }
+
         return $this;
     }
 
     public function distance($args): self
     {
         $this->query->must(new Distance($args));
+
         return $this;
     }
 
@@ -173,9 +187,11 @@ class Search
             case 'range':
                 $object = new Range($attr, [
                     'gte' => $values[0],
-                    'lte' => $values[1]
+                    'lte' => $values[1],
                 ]);
+
                 break;
+
             case 'lt':
             case 'lte':
             case 'gt':
@@ -183,14 +199,20 @@ class Search
                 $object = new Range($attr, [
                     $op => $values[0],
                 ]);
+
                 break;
+
             case 'in':
                 $object = new In($attr, $values);
+
                 break;
+
             case 'equals':
-                $value = is_bool($values[0]) ? (int)$values[0] : $values[0];
+                $value = is_bool($values[0]) ? (int) $values[0] : $values[0];
                 $object = new Equals($attr, $value);
+
                 break;
+
             default:
                 $object = null;
         }
@@ -203,7 +225,7 @@ class Search
         if (!is_object($attr)) {
             if (is_null($values)) {
                 $values = $op;
-                $op = "equals";
+                $op = 'equals';
             }
 
             if (!is_array($values)) {
@@ -241,16 +263,18 @@ class Search
     public function offset($offset): self
     {
         $this->params['offset'] = $offset;
+
         return $this;
     }
 
     public function maxMatches($maxmatches): self
     {
         $this->params['max_matches'] = $maxmatches;
+
         return $this;
     }
 
-    public function facet($field, $group = null, $limit = null, $sortField = null, $sortDirection = 'desc') : self
+    public function facet($field, $group = null, $limit = null, $sortField = null, $sortDirection = 'desc'): self
     {
         // reset facets
         if ($field === false) {
@@ -259,14 +283,15 @@ class Search
         if ($group === null) {
             $group = $field;
         }
-            $terms = ['field'=>$field];
-        if ($limit !==null) {
+        $terms = ['field' => $field];
+        if ($limit !== null) {
             $terms['size'] = $limit;
         }
-        $this->params['aggs'][$group] = ['terms' =>$terms];
+        $this->params['aggs'][$group] = ['terms' => $terms];
         if ($sortField !== null) {
-            $this->params['aggs'][$group]['sort'] = [ [$sortField => $sortDirection] ];
+            $this->params['aggs'][$group]['sort'] = [[$sortField => $sortDirection]];
         }
+
         return $this;
     }
 
@@ -276,10 +301,10 @@ class Search
         if ($field === false) {
             $this->params['sort'] = [];
         }
-        //if 1st arg is array means we have a sorting expression
+        // if 1st arg is array means we have a sorting expression
         if (is_array($field)) {
-            //if 2nd arg is true we full set the sort with the expr, otherwise just add it
-            //we let passing uppercased directions here as well
+            // if 2nd arg is true we full set the sort with the expr, otherwise just add it
+            // we let passing uppercased directions here as well
             foreach ($field as $k => $v) {
                 if (is_string($v)) {
                     $field[$k] = strtolower($v);
@@ -288,8 +313,9 @@ class Search
             if (isset($direction) && $direction === true) {
                 $this->params['sort'] = $field;
             } else {
-                $this->params['sort'] [] = $field;
+                $this->params['sort'][] = $field;
             }
+
             return $this;
         }
         if (!isset($this->params['sort'])) {
@@ -297,9 +323,9 @@ class Search
         }
         $direction = strtolower($direction);
         if ($mode === null) {
-            $this->params['sort'] [] = [$field => $direction];
+            $this->params['sort'][] = [$field => $direction];
         } else {
-            $this->params['sort'] [] = [$field => ['order' => $direction, 'mode' => $mode]];
+            $this->params['sort'][] = [$field => ['order' => $direction, 'mode' => $mode]];
         }
 
         return $this;
@@ -319,6 +345,7 @@ class Search
     public function profile(): self
     {
         $this->params['profile'] = true;
+
         return $this;
     }
 
@@ -329,6 +356,7 @@ class Search
     {
         $this->body = $this->compile();
         $resp = $this->client->search(['body' => $this->body], true);
+
         return new ResultSet($resp);
     }
 

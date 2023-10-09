@@ -13,7 +13,7 @@ class CreateTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $client = new Client($params);
         $params = [
@@ -22,26 +22,26 @@ class CreateTest extends \PHPUnit\Framework\TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
+                        'options' => ['indexed', 'stored'],
                     ],
                     'price' => [
-                        'type' => 'float'
-                    ]
+                        'type' => 'float',
+                    ],
                 ],
                 'settings' => [
                     'rt_mem_limit' => '256M',
-                    'min_infix_len' => '3'
+                    'min_infix_len' => '3',
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         $response = $client->indices()->create($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total' => 0, 'error' => '', 'warning' => ''], $response);
         $params = [
-            'index'=>'products'
+            'index' => 'products',
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
     public function testCreateDistributed()
@@ -54,30 +54,30 @@ class CreateTest extends \PHPUnit\Framework\TestCase
                 'columns' => [
                     'title' => [
                         'type' => 'text',
-                        'options' => ['indexed', 'stored']
-                    ]
+                        'options' => ['indexed', 'stored'],
+                    ],
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
         $response = $client->indices()->create($params);
 
         $params = [
             'index' => 'testrtdist',
             'body' => [
-                'settings' =>[
-                    'type' =>'distributed',
-                    'local' => 'testrt'
-                ]
-            ]
+                'settings' => [
+                    'type' => 'distributed',
+                    'local' => 'testrt',
+                ],
+            ],
         ];
         $response = $client->indices()->create($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total' => 0, 'error' => '', 'warning' => ''], $response);
         $params = [
-            'index'=>'testrtdist'
+            'index' => 'testrtdist',
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
     public function testCreateDistributedWIthMultipleIndexes()
@@ -151,15 +151,15 @@ class CreateTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $client = new Client($params);
         $params = [
-            'index'=>'noindexname',
-            'body' => ['silent'=>true]
+            'index' => 'noindexname',
+            'body' => ['silent' => true],
         ];
         $response = $client->indices()->drop($params);
-        $this->assertSame(['total'=>0,'error'=>'','warning'=>''], $response);
+        $this->assertSame(['total' => 0, 'error' => '', 'warning' => ''], $response);
     }
 
     public function testSetGetIndex()

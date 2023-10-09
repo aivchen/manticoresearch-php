@@ -1,4 +1,5 @@
 <?php
+
 namespace Manticoresearch\Test\Endpoints;
 
 use Manticoresearch\Client;
@@ -19,31 +20,34 @@ class SuggestTest extends \PHPUnit\Framework\TestCase
         $helper->populateForKeywords();
         self::$client = $helper->getClient();
     }
+
     public function testSuggest()
     {
         $params = [
             'index' => 'products',
             'body' => [
-                'query'=>'brokn',
+                'query' => 'brokn',
                 'options' => [
-                    'limit' =>5
-                ]
-            ]
+                    'limit' => 5,
+                ],
+            ],
         ];
         $response = self::$client->suggest($params);
         $this->assertSame('broken', array_keys($response)[0]);
     }
+
     public function testSuggestBadIndex()
     {
         $params = [
             'index' => 'productsNOT',
             'body' => [
-                'query'=>'brokn',
+                'query' => 'brokn',
                 'options' => [
-                    'limit' =>5
-                ]
-            ]
+                    'limit' => 5,
+                ],
+            ],
         ];
+
         // Adding extra try-catch to provide compatibility with previous Manticore versions
         try {
             $response = static::$client->suggest($params);
@@ -57,16 +61,17 @@ class SuggestTest extends \PHPUnit\Framework\TestCase
             }
         }
     }
+
     public function testResponseExceptionViaSuggest()
     {
         $params = [
             'index' => 'productsNOT',
             'body' => [
-                'query'=>'brokn',
+                'query' => 'brokn',
                 'options' => [
-                    'limit' =>5
-                ]
-            ]
+                    'limit' => 5,
+                ],
+            ],
         ];
 
         try {
@@ -74,11 +79,12 @@ class SuggestTest extends \PHPUnit\Framework\TestCase
         } catch (ResponseException $ex) {
             $request = $ex->getRequest();
             $this->assertEquals(
-                "mode=raw&query=CALL+SUGGEST%28%27brokn%27%2C%27productsNOT%27%2C5+AS+limit%29",
+                'mode=raw&query=CALL+SUGGEST%28%27brokn%27%2C%27productsNOT%27%2C5+AS+limit%29',
                 $request->getBody()
             );
 
             $response = $ex->getResponse();
+
             // Adding extra try-catch to provide compatibility with previous Manticore versions
             try {
                 $this->assertEquals('"no such index productsNOT"', $response->getError());
@@ -87,12 +93,14 @@ class SuggestTest extends \PHPUnit\Framework\TestCase
             }
         }
     }
+
     public function testSuggestGetIndex()
     {
         $suggest = new \Manticoresearch\Endpoints\Suggest();
         $suggest->setIndex('products');
         $this->assertEquals('products', $suggest->getIndex());
     }
+
     public function testSuggestNoIndex()
     {
         $suggest = new \Manticoresearch\Endpoints\Suggest();

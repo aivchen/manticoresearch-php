@@ -12,11 +12,10 @@ class DocTest extends \PHPUnit\Framework\TestCase
     {
         $client = new Client();
         $params = [
-
             'body' => [
-                'query' => ['match'=>['subject'=>'test']],
-                'tags' => ['test1','test2']
-            ]
+                'query' => ['match' => ['subject' => 'test']],
+                'tags' => ['test1', 'test2'],
+            ],
         ];
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Index name is missing.');

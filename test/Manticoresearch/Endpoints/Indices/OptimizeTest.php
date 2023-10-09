@@ -32,7 +32,7 @@ class OptimizeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals([
             'total' => 0,
             'error' => '',
-            'warning' => ''
+            'warning' => '',
         ], $response);
     }
 

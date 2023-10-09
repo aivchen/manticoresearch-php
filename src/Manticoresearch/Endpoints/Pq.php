@@ -1,16 +1,13 @@
 <?php
 
-
 namespace Manticoresearch\Endpoints;
 
 use Manticoresearch\Client;
 use Manticoresearch\Endpoints\Pq\DeleteByQuery;
 use Manticoresearch\Endpoints\Pq\Doc;
-use phpDocumentor\Reflection\Types\Object_;
 
 /**
- * Class Pq
- * @package Manticoresearch\Endpoints
+ * Class Pq.
  */
 class Pq
 {
@@ -21,6 +18,7 @@ class Pq
 
     /**
      * Pq constructor.
+     *
      * @param Client $client
      */
     public function __construct($client)
@@ -30,6 +28,7 @@ class Pq
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function doc($params)
@@ -44,11 +43,14 @@ class Pq
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint);
+
         return $response->getResponse();
     }
 
     /**
      * @param array $params
+     * @param mixed $obj
+     *
      * @return mixed
      */
     public function search($params, $obj = false)
@@ -62,13 +64,14 @@ class Pq
         $response = $this->client->request($endpoint);
         if ($obj === true) {
             return $response;
-        } else {
-            return $response->getResponse();
         }
+
+        return $response->getResponse();
     }
 
     /**
      * @param array $params
+     *
      * @return mixed
      */
     public function deleteByQuery($params = [])
@@ -80,6 +83,7 @@ class Pq
         $endpoint->setQuery($params['query'] ?? null);
         $endpoint->setBody($body);
         $response = $this->client->request($endpoint);
+
         return $response->getResponse();
     }
 }

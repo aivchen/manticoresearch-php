@@ -15,7 +15,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
 
         static::$client = new Client($params);
@@ -24,11 +24,11 @@ class BulkTest extends \PHPUnit\Framework\TestCase
             'body' => [
                 'columns' => [
                     'title' => [
-                        'type' => 'text'
+                        'type' => 'text',
                     ],
                 ],
-                'silent' => true
-            ]
+                'silent' => true,
+            ],
         ];
 
         static::$client->indices()->create($params);
@@ -53,7 +53,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase
     public function testDelete()
     {
         $response = static::$client->search(['body' => ['index' => 'bulktest', 'query' => ['match_all' => '']]]);
-        $response = static:: $client->bulk(['body' => [
+        $response = static::$client->bulk(['body' => [
             ['insert' => ['index' => 'bulktest', 'id' => 4, 'doc' => ['title' => 'test']]],
             ['delete' => ['index' => 'bulktest', 'id' => 2]],
             ['delete' => ['index' => 'bulktest', 'id' => 3]],

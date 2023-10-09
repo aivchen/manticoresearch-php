@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Test;
 
 use Manticoresearch\Client;
@@ -20,7 +19,7 @@ class IndexTest extends TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $this->index = new Index(new Client($params));
         $this->index->setName('testindex');
@@ -30,7 +29,7 @@ class IndexTest extends TestCase
         if ($keywords === true) {
             $options = [
                 'dict' => 'keywords',
-                'min_infix_len' => 2
+                'min_infix_len' => 2,
             ];
         }
 
@@ -42,8 +41,9 @@ class IndexTest extends TestCase
             'gid' => ['type' => 'int'],
             'label' => ['type' => 'string'],
             'tags' => ['type' => 'multi'],
-            'props' => ['type' => 'json']
+            'props' => ['type' => 'json'],
         ], $options);
+
         return $this->index;
     }
 
@@ -56,11 +56,10 @@ class IndexTest extends TestCase
             'tags' => [1, 2, 3],
             'props' => [
                 'color' => 'blue',
-                'rule' => ['one', 'two']
-            ]
+                'rule' => ['one', 'two'],
+            ],
         ], 1);
     }
-
 
     public function testReplaceDocument()
     {
@@ -73,8 +72,8 @@ class IndexTest extends TestCase
             'tags' => [1, 2, 3],
             'props' => [
                 'color' => 'blue',
-                'rule' => ['one', 'two']
-            ]
+                'rule' => ['one', 'two'],
+            ],
         ], 1);
 
         $this->assertEquals([
@@ -98,8 +97,8 @@ class IndexTest extends TestCase
             'tags' => [1, 2, 3],
             'props' => [
                 'color' => 'blue',
-                'rule' => ['one', 'two']
-            ]
+                'rule' => ['one', 'two'],
+            ],
         ]]);
 
         $this->assertEquals([
@@ -111,13 +110,13 @@ class IndexTest extends TestCase
                     'deleted' => 1,
                     'updated' => 0,
                     'result' => 'updated',
-                    'status' => 200
-                ]]
+                    'status' => 200,
+                ]],
             ],
             'errors' => false,
             'current_line' => 2,
             'skipped_lines' => 0,
-            'error' => ''
+            'error' => '',
         ], $response);
     }
 
@@ -161,7 +160,6 @@ class IndexTest extends TestCase
 
         $this->assertArrayHasKey('disk_bytes', $status);
     }
-
 
     public function testDescribe()
     {
@@ -259,7 +257,6 @@ class IndexTest extends TestCase
         $this->assertEquals(null, $response);
     }
 
-
     public function testSearch()
     {
         $index = $this->getIndex();
@@ -305,7 +302,7 @@ class IndexTest extends TestCase
                 'type' => 'text'],
                 'plot' => ['type' => 'text'],
                 'year' => ['type' => 'integer'],
-                'rating' => ['type' => 'float']
+                'rating' => ['type' => 'float'],
             ],
             [],
             true
@@ -317,7 +314,7 @@ class IndexTest extends TestCase
                     ' to negotiate a peace treaty. Captain Picard and his crew discover a serious threat to the ' .
                     'Federation once Praetor Shinzon plans to attack Earth.',
                 'year' => 2002,
-                'rating' => 6.4
+                'rating' => 6.4,
             ],
             1
         );
@@ -331,9 +328,9 @@ class IndexTest extends TestCase
             ['id' => 4, 'title' => '1917 ', 'plot' => ' As a regiment assembles to wage war deep in enemy territory,' .
                 ' two soldiers are assigned to race against time and deliver a message that will stop 1,600 men from' .
                 ' walking straight into a deadly trap.', 'year' => 2018, 'rating' => 8.4],
-            ['id' => 5, 'title' => 'Alien', 'plot' => ' After a space merchant vessel receives an unknown transmission'.
+            ['id' => 5, 'title' => 'Alien', 'plot' => ' After a space merchant vessel receives an unknown transmission' .
                 ' as a distress call, one of the team\'s member is attacked by a mysterious life form and they soon' .
-                ' realize that its life cycle has merely begun.', 'year' => 1979, 'rating' => 8.4]
+                ' realize that its life cycle has merely begun.', 'year' => 1979, 'rating' => 8.4],
         ]);
 
         $results = $index->search('space team')->get();
@@ -377,20 +374,18 @@ class IndexTest extends TestCase
         $response = $index->deleteDocuments(new Range('id', ['gte' => 100]));
         $this->assertEquals(0, $response['deleted']);
 
-
         $index->truncate();
         $results = $index->search('')
             ->get();
         $this->assertCount(0, $results);
 
-        $newdoc ='{"title":"Tenet","plot":"Armed with only one word, Tenet, and fighting for the survival of the '.
-            'entire world, a Protagonist journeys through a twilight world of international espionage on a mission '.
+        $newdoc = '{"title":"Tenet","plot":"Armed with only one word, Tenet, and fighting for the survival of the ' .
+            'entire world, a Protagonist journeys through a twilight world of international espionage on a mission ' .
             'that will unfold in something beyond real time","year":2020,"rating":8.8}';
         $index->addDocument($newdoc);
         $index->addDocument(json_decode($newdoc));
         $results = $index->search('tenet')->get();
         $this->assertCount(2, $results);
-
 
         $response = $index->drop();
         $this->assertEquals('', $response['error']);
@@ -413,7 +408,7 @@ class IndexTest extends TestCase
             ['title' => 'find me fast'],
             ['title' => 'pick me'],
             ['title' => 'something else'],
-            ['title' => 'this is false']
+            ['title' => 'this is false'],
         ];
         $result = $this->index->percolate($docs);
         $this->assertEquals(3, $result->count());
@@ -431,7 +426,6 @@ class IndexTest extends TestCase
         $this->assertInstanceOf('Manticoresearch\Client', $index->getClient());
     }
 
-
     public function testSetGetName()
     {
         $index = $this->getIndex();
@@ -443,7 +437,7 @@ class IndexTest extends TestCase
         $params = [
             'host' => $_SERVER['MS_HOST'],
             'port' => $_SERVER['MS_PORT'],
-            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT']
+            'transport' => empty($_SERVER['TRANSPORT']) ? 'Http' : $_SERVER['TRANSPORT'],
         ];
         $client = new Client($params);
 
@@ -456,7 +450,7 @@ class IndexTest extends TestCase
                 'title' => ['type' => 'text'],
                 'plot' => ['type' => 'text'],
                 'year' => ['type' => 'integer'],
-                'rating' => ['type' => 'float']
+                'rating' => ['type' => 'float'],
             ],
             [],
             true
@@ -468,15 +462,15 @@ class IndexTest extends TestCase
                     ' to negotiate a peace treaty. Captain Picard and his crew discover a serious threat to the ' .
                     'Federation once Praetor Shinzon plans to attack Earth.',
                 'year' => 2002,
-                'rating' => 6.4
+                'rating' => 6.4,
             ],
             1
         );
         $result = $client->sql([
             'mode' => 'raw',
             'body' => [
-                'query' => 'select id, year from test where year = 2000'
-            ]
+                'query' => 'select id, year from test where year = 2000',
+            ],
         ]);
         $this->assertEquals([], $result);
 

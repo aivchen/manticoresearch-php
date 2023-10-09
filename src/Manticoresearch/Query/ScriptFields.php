@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Manticoresearch\Query;
 
 use Manticoresearch\Query;
@@ -16,11 +15,10 @@ class ScriptFields extends Query
 
     public function add($field, $args = [])
     {
-        $this->obj->$field = [
+        $this->obj->{$field} = [
             'script' => [
-                'inline' => $args
-            ]
-
+                'inline' => $args,
+            ],
         ];
     }
 
