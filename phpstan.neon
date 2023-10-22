@@ -2,3 +2,8 @@ parameters:
 	level: 3
 	paths:
 		- src
+		- test
+	ignoreErrors:
+		-
+			message: '#^Unsafe access to private property .* through static\:\:\.$#'
+			path: test
